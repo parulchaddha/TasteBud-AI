@@ -1,21 +1,29 @@
 import './App.css';
 import Home from './Components/Home';
-import background from "./images/tastebudbg.jpeg";
+import Login from './Components/Login';
+import Signup from './Components/Signup';
+import { 
+  BrowserRouter as Router, 
+  Route, 
+  Link,
+  Routes
+} from "react-router-dom"; 
 function App() {
-//   const myStyle={
-//     backgroundImage: `url(${background})` ,
-//     height:'100vh',
-//     marginTop:'-70px',
-//     fontSize:'50px',
-//     backgroundSize: 'cover',
-//     backgroundRepeat: 'no-repeat',
-// };
   return (
-    // <div style={myStyle}>
-    //  <Home/>
-    // </div>
-    <Home/>
+    <>
+    <Router>
+      <Routes>
+        <Route path="/"
+          element={<Home />}/>
 
+        <Route path="/Login"
+          element={<Login />}/>
+        
+        <Route path="/Signup"
+          element={<Signup />}/>
+      </Routes>
+    </Router>
+    </> 
   );
 }
 
