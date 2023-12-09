@@ -1,21 +1,13 @@
 import React, { useState } from 'react';
 import background from '../images/tastebudbg.jpeg';
-// import { Routes, Route,useNavigate } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-// import Login from './Login';
-// import Signup from './Signup';
+import { Link } from 'react-router-dom';
+
 function Home() {
 
   const [isHovered, setIsHovered] = useState(false);
-  // const navigate = useNavigate();
   
-  //   const HandleLogin = () => { 
-  //       navigate('/Login');
-  //   } 
-  //   const HandleSignup = () => { 
-  //     navigate('/Signup');
-  //   } 
   return (
 
     <div style={{
@@ -28,15 +20,12 @@ function Home() {
     <hr style={{height:'2pt',visibility:'hidden'}}/>
       <div style={{ display: 'flex', flexDirection: 'row', marginLeft: '1300px', marginTop: '70px' }}>
         <Button style={{ marginRight: '10px', backgroundColor:'#e0bd5d', color: 'black', fontSize: '18px', padding: '10px 20px', borderRadius: '10px',boxShadow:'8px 8px 16px rgba(0, 0, 0, 1.0)' }}>
-          Login
+        <Link className='text-lg' to='/Login' style={{ color: 'black' }}>Login</Link>
         </Button>
         <Button style={{ backgroundColor: '#e0bd5d', color: 'black', fontSize: '18px', padding: '10px 20px' , borderRadius: '10px',boxShadow:'8px 8px 16px rgba(0, 0, 0, 0.8)'}}>
-          Signup
+          <Link className='text-lg' style={{ color: 'black' }} to='/Signup'>SignUp</Link>
         </Button>
-        {/* <Routes>
-          <Route path="/Login" element={<Login />} />
-          <Route path="/Signup" element={<Signup />} />
-        </Routes> */}
+        
       </div>
       <h1 style={{
         fontSize: isHovered ? '95px' : '90px',
