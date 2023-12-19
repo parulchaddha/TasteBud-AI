@@ -1,7 +1,35 @@
 import React from 'react';
 import {MDBContainer, MDBCol, MDBRow, MDBBtn, MDBIcon, MDBInput, MDBCheckbox } from 'mdb-react-ui-kit';
 import background from '../images/tastebudbg.jpeg';
-function App() {
+import { useEffect, useState } from "react";
+import {useNavigate} from 'react-router-dom';
+
+const Login=()=> {
+  
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
+
+  const navigate = useNavigate();
+
+  const handleLogin = async () => {
+    const response = await fetch('http://localhost:5000/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json();
+    if (data.status === 'success') {
+      localStorage.setItem('username', data.username);
+      setIsLoggedIn(true);
+      setUsername(data.username);
+      navigate('/Homenew'); // Redirect to home page
+    }
+  };
 
   return (
     <div style={{
@@ -25,8 +53,8 @@ function App() {
           <h1 style={{fontFamily:'cursive',fontStyle:'italic,bold',marginLeft:'115px',fontSize:'65px',color:'black'}}>Login</h1>
           <br/>
           <br/>
-          <MDBInput  style={{ outline: '2px solid black' }} wrapperClass='mb-4' label='Email address' id='formControlLg' type='email' size="lg"/>
-          <MDBInput  style={{ outline: '2px solid black' }} wrapperClass='mb-4' label='Password' id='formControlLg' type='password' size="lg"/>
+          <MDBInput  style={{ outline: '2px solid black' }} wrapperClass='mb-4' label='Email address' onChange={(e) => setEmail(e.target.value)} id='formControlLg' type='email' size="lg"/>
+          <MDBInput  style={{ outline: '2px solid black' }} wrapperClass='mb-4' label='Password' onChange={(e) => setPassword(e.target.value)} id='formControlLg' type='password' size="lg"/>
 
           <div className="d-flex justify-content-between mb-4">
             <a href="!#" style={{color:'black',fontStyle:'oblique'}}>Forgot password?</a>
@@ -34,7 +62,7 @@ function App() {
 
           <div className='text-center text-md-start mt-4 pt-2'>
             <MDBBtn className="mb-0 px-5" size='lg' 
-            style={{backgroundColor: '#e0bd5d', color: 'black',boxShadow:'8px 8px 16px rgba(0, 0, 0, 1.0)'}}>
+            style={{backgroundColor: '#e0bd5d', color: 'black',boxShadow:'8px 8px 16px rgba(0, 0, 0, 1.0)'}} onClick={handleLogin}>
             Login</MDBBtn>
             <p className="small fw-bold mt-2 pt-1 mb-2" style={{color:'black'}}>Don't have an account? <a style={{color:'red'}} href="Signup" >Register</a></p>
           </div>
@@ -48,4 +76,4 @@ function App() {
   );
 }
 
-export default App;
+export default Login;
