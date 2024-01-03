@@ -1,48 +1,116 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import background from '../images/tastebudbg.jpeg';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
+import Modal from 'react-bootstrap/Modal';
 import {useNavigate} from 'react-router-dom';
 
 function Home() {
-
   const [isHovered, setIsHovered] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [userConfirmedLogout, setUserConfirmedLogout] = useState(false);
   const navigate = useNavigate();
-  return (
 
+ // Check login status on component mount
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      setIsLoggedIn(true);
+      setUsername(storedUsername);
+    }
+  }, []);
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername && userConfirmedLogout) {
+      setIsLoggedIn(false);
+      setUsername('');
+      localStorage.removeItem('username');
+      setUserConfirmedLogout(false); // Reset the confirmation state
+    }
+  }, [userConfirmedLogout]);
+  
+  const handleLogout = () => {
+    // Clear user data on logout
+      console.log('Logout button clicked');
+      setShowLogoutModal(true);
+      setIsLoggedIn(false);
+    // setUsername('');
+    // localStorage.removeItem('username');
+      
+  };
+//   <Modal show={showLogoutModal} onHide={() => setShowLogoutModal(false)}>
+//   <Modal.Header closeButton>
+//     <Modal.Title>Logout Confirmation</Modal.Title>
+//   </Modal.Header>
+//   <Modal.Body>Are you sure you want to logout?</Modal.Body>
+//   <Modal.Footer>
+//     <Button variant="secondary" onClick={() => setShowLogoutModal(false)}>
+//       No
+//     </Button>
+//     <Button variant="primary" onClick={() => {
+//       setUserConfirmedLogout(true);
+//       setShowLogoutModal(false);
+//       // setIsLoggedIn(false);
+//     }}>
+//       Yes
+//     </Button>
+//   </Modal.Footer>
+// </Modal>
+
+  return (
+    
     <div style={{
       backgroundImage: `url(${background})`,
       height: '107.6vh',
       marginTop: '-70px',
       backgroundSize: 'cover',
-      backgroundRepeat: 'no-repeat', 
+      backgroundRepeat: 'no-repeat',
     }}>
-    <hr style={{height:'2pt',visibility:'hidden'}}/>
-      <div onClick={() => navigate('/Login')} style={{ display: 'flex', flexDirection: 'row', marginLeft: '1300px', marginTop: '70px' }}>
-        <Button style={{ marginRight: '10px', backgroundColor:'#e0bd5d', color: 'black', fontSize: '18px', padding: '10px 20px', borderRadius: '10px',boxShadow:'8px 8px 16px rgba(0, 0, 0, 1.0)' }}>
-        <Link className='text-lg' to='/Login' style={{ color: 'black' }}>Login</Link>
-        </Button>
-        <Button  onClick={() => navigate('/Signup')} style={{ backgroundColor: '#e0bd5d', color: 'black', fontSize: '18px', padding: '10px 20px' , borderRadius: '10px',boxShadow:'8px 8px 16px rgba(0, 0, 0, 0.8)'}}>
-          <Link className='text-lg' style={{ color: 'black' }} to='/Signup'>SignUp</Link>
-        </Button>
-        
-      </div>
+      <hr style={{height:'2pt',visibility:'hidden'}}/>
+      
+      {userConfirmedLogout ? (
+  <>
+    {navigate('/')} {/* Redirect to the login page */}
+  </>
+):
+        isLoggedIn ? (
+        <div style={{ display: 'flex', flexDirection: 'row', marginLeft: '1300px', marginTop: '70px' }}>
+          {/* <p style={{ color: 'white', fontSize: '20px', marginRight: '30px' }}>Welcome, {username}!</p> */}
+          <Button style={{ backgroundColor: '#e0bd5d', color: 'black', fontSize: '18px', padding: '10px 20px', borderRadius: '10px',boxShadow:'8px 8px 16px rgba(0, 0, 0, 0.8)' ,marginLeft: '60px' }} onClick={handleLogout}>
+            Logout
+          </Button>
+        </div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'row', marginLeft: '1300px', marginTop: '70px' }}>
+          <Button style={{ marginRight: '10px', backgroundColor:'#e0bd5d', color: 'black', fontSize: '18px', padding: '10px 20px', borderRadius: '10px',boxShadow:'8px 8px 16px rgba(0, 0, 0, 1.0)' }}>
+            <Link className='text-lg' to='/Login' style={{ color: 'black' }}>Login</Link>
+          </Button>
+          <Button style={{ backgroundColor: '#e0bd5d', color: 'black', fontSize: '18px', padding: '10px 20px' , borderRadius: '10px',boxShadow:'8px 8px 16px rgba(0, 0, 0, 0.8)'}}>
+            <Link className='text-lg' style={{ color: 'black' }} to='/Signup'>SignUp</Link>
+          </Button>
+        </div>
+      )}
+
       <h1 style={{
         fontSize: isHovered ? '95px' : '90px',
         marginLeft: '900px',
-        marginTop: '10px', // Adjusted to move below the center vertically
+        marginTop: '10px',
         fontStyle: 'italic',
-        fontFamily: 'cursive', // Adjusted to a stylish font
-        color: 'white', // Text color
-        textShadow: isHovered ? '4px 4px 8px rgba(0, 0, 0, 1.0)' : '2px 2px 4px rgba(0, 0, 0, 0.8)', // Hover effect for text shadow
+        fontFamily: 'cursive',
+        color: 'white',
+        textShadow: isHovered ? '4px 4px 8px rgba(0, 0, 0, 1.0)' : '2px 2px 4px rgba(0, 0, 0, 0.8)',
         transition: 'font-size 0.3s, text-shadow 0.3s',
       }}
-        onMouseOver={() => setIsHovered(true)}
-        onMouseOut={() => setIsHovered(false)}
+        // onMouseOver={() => setIsHovered(true)}
+        // onMouseOut={() => setIsHovered(false)}
       >
-        TasteBud</h1>
-        <br/>
+        TasteBud
+      </h1>
+      <br/>
 
       <div style={{ display: 'flex', flexDirection: 'row', marginLeft: '850px' }}>
         <Card
@@ -57,8 +125,8 @@ function Home() {
             transition: 'transform 0.2s, box-shadow 0.2s',
             boxShadow: isHovered ? '8px 8px 16px rgba(0, 0, 0, 1.0)' : '4px 4px 8px rgba(0, 0, 0, 0.8)',
           }}
-          onMouseOver={() => setIsHovered(true)}
-          onMouseOut={() => setIsHovered(false)}
+          // onMouseOver={() => setIsHovered(true)}
+          // onMouseOut={() => setIsHovered(false)}
         >
           <Card.Body
             style={{
@@ -95,8 +163,8 @@ function Home() {
             transition: 'transform 0.2s, box-shadow 0.2s',
             boxShadow: isHovered ? '8px 8px 16px rgba(0, 0, 0, 1.0)' : '4px 4px 8px rgba(0, 0, 0, 0.8)',
           }}
-          onMouseOver={() => setIsHovered(true)}
-          onMouseOut={() => setIsHovered(false)}
+          // onMouseOver={() => setIsHovered(true)}
+          // onMouseOut={() => setIsHovered(false)}
         >
           <Card.Body
             style={{
@@ -137,8 +205,15 @@ function Home() {
             // boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
             boxShadow: isHovered ? '8px 8px 16px rgba(0, 0, 0, 1.0)' : '4px 4px 8px rgba(0, 0, 0, 0.8)',
           }}
-          onMouseOver={() => setIsHovered(true)}
-          onMouseOut={() => setIsHovered(false)}
+          // onMouseOver={() => setIsHovered(true)}
+          // onMouseOut={() => setIsHovered(false)}
+          onClick={() => {
+          if (isLoggedIn) {
+            navigate('/Pantry'); // Redirect to Pantry page if logged in
+          } else {
+            navigate('/Login'); // Redirect to Login page if not logged in
+          }
+        }}
         >
           <Card.Body
             style={{
@@ -172,7 +247,6 @@ function Home() {
           About us 👩‍💻
         </Button>
       </div>
-
 
     </div>
   );
