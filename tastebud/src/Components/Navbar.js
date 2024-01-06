@@ -1,8 +1,9 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { Link } from 'react-router-dom';
 import { FaUserCircle } from 'react-icons/fa'; // Or any icon library you prefer
 
 function Navbar() {
+  
   return (
     <nav className="navbar" style={{
       backgroundColor: '#e0bd5d',
@@ -13,13 +14,13 @@ function Navbar() {
       <div className="navbar-container" style={{
         maxwidth: '1200px',
         width: '100%',
-        marginRight:'90px',
+        marginLeft:'210vh',
         margin: '0 auto'
       }}>
         <Link to="/dashboard" className="user-icon" style={{
           color: 'black'
         }}>
-          <FaUserCircle className="user-icon" style={{marginRight:'90px'}}/>
+          <FaUserCircle className="user-icon" />
         </Link>
       </div>
     </nav>
