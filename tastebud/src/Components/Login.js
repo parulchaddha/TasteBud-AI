@@ -29,6 +29,10 @@ const Login=()=> {
       setUsername(data.username);
       navigate('/'); // Redirect to home page
     }
+    else if (data.status === 'error' && data.message === 'Invalid email or password') {
+      // Display a prompt for incorrect password
+      alert('Incorrect password or email. Please try again.');
+    } 
   };
 
   return (

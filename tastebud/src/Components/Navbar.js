@@ -15,12 +15,15 @@ function Navbar() {
         maxwidth: '1200px',
         width: '100%',
         marginLeft:'210vh',
-        margin: '0 auto'
+        margin: '0 auto',
       }}>
         <Link to="/dashboard" className="user-icon" style={{
-          color: 'black'
+          color: 'black',
         }}>
-          <FaUserCircle className="user-icon" />
+          <FaUserCircle className="user-icon" style={{
+          width:'30px',
+          height:'25px'
+        }}/>
         </Link>
       </div>
     </nav>
