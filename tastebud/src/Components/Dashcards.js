@@ -1,7 +1,38 @@
-import React ,{useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
-function dashcards() {
+function Dashcards() {
+
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    // Call the function to fetch user information
+    fetchUserInfo();
+  }, []);
+
+
+  const fetchUserInfo = async () => {
+    try {
+      // Make a request to the Flask endpoint to fetch user information
+      const response = await fetch('http://localhost:5000/user-info', {
+        method: 'GET',
+        credentials: 'include',  // Include credentials (cookies) with the request
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await response.json();
+
+      if (data.status === 'success') {
+        setUserInfo(data.user_info);
+      } else {
+        console.error('Error fetching user information:', data.message);
+      }
+    } catch (error) {
+      console.error('Error fetching user information:', error);
+    }
+  };
     return(
         <>
             <div style={{ display: 'flex', flexDirection: 'row', marginLeft: '130vh' }}>
@@ -37,7 +68,7 @@ function dashcards() {
                 marginRight:'30px'
               }}
             >
-              Name
+              {userInfo.name || 'N/A'}
             </Card.Title>
           </Card.Body>
         </Card>
@@ -163,4 +194,4 @@ function dashcards() {
         </>
     );
 }
-export default dashcards;
+export default Dashcards;

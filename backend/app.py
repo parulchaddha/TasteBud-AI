@@ -28,7 +28,7 @@ def login():
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
-
+    
     query = "SELECT * FROM users WHERE email=%s AND password=%s"
     result = execute_query(query, (email, password))
 
@@ -57,6 +57,30 @@ def signup():
     execute_query(query, (email, password, name, username))
 
     return jsonify({"status": "success", "message": "Signup successful"})
+
+#get user details
+@app.route('/user-info', methods=['GET'])
+def get_user_info():
+    try:
+        # Check if the user is logged in (using a session identifier)
+        if 'userid' not in session:
+            return jsonify({"status": "error", "message": "User not logged in"})
+
+        user_id = session['userid']
+
+        # Query the database for user information based on user_id
+        query = "SELECT name, email FROM user WHERE userid=%s"
+        result = execute_query(query, (user_id,))
+
+        if result:
+            user_info = result[0]
+            return jsonify({"status": "success", "user_info": user_info})
+        else:
+            return jsonify({"status": "error", "message": "User not found"})
+
+    except Exception as e:
+        print(e)
+        return jsonify({"status": "error", "message": "Internal server error"})
 
 if __name__ == '__main__':
     app.run(debug=True)

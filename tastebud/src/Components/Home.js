@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 import {useNavigate} from 'react-router-dom';
+import LogoutModal from './logoutModal';
 
 function Home() {
   const [isHovered, setIsHovered] = useState(false);
@@ -32,35 +33,20 @@ function Home() {
       setUserConfirmedLogout(false); // Reset the confirmation state
     }
   }, [userConfirmedLogout]);
-  
   const handleLogout = () => {
-    // Clear user data on logout
-      console.log('Logout button clicked');
-      setShowLogoutModal(true);
-      setIsLoggedIn(false);
-    // setUsername('');
-    // localStorage.removeItem('username');
-      
+    setShowLogoutModal(true);
   };
-//   <Modal show={showLogoutModal} onHide={() => setShowLogoutModal(false)}>
-//   <Modal.Header closeButton>
-//     <Modal.Title>Logout Confirmation</Modal.Title>
-//   </Modal.Header>
-//   <Modal.Body>Are you sure you want to logout?</Modal.Body>
-//   <Modal.Footer>
-//     <Button variant="secondary" onClick={() => setShowLogoutModal(false)}>
-//       No
-//     </Button>
-//     <Button variant="primary" onClick={() => {
-//       setUserConfirmedLogout(true);
-//       setShowLogoutModal(false);
-//       // setIsLoggedIn(false);
-//     }}>
-//       Yes
-//     </Button>
-//   </Modal.Footer>
-// </Modal>
 
+  const closeLogoutModal = () => {
+    setShowLogoutModal(false);
+  };
+
+  const confirmLogout = () => {
+    // Clear user data on logout
+    console.log('Logout button clicked');
+    setIsLoggedIn(false);
+    setShowLogoutModal(false);
+  };
   return (
     
     <div style={{
@@ -94,7 +80,7 @@ function Home() {
           </Button>
         </div>
       )}
-
+        {showLogoutModal && <LogoutModal isOpen={showLogoutModal} closeModal={closeLogoutModal} onConfirm={confirmLogout} />}
       <h1 style={{
         fontSize: isHovered ? '95px' : '90px',
         marginLeft: '900px',
