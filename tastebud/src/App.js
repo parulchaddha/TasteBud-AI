@@ -1,4 +1,5 @@
 import './App.css';
+import React, {useState,useEffect} from 'react';
 import Home from './Components/Home';
 import Login from './Components/Login';
 import Signup from './Components/Signup';
@@ -11,8 +12,21 @@ import {
   Routes
 } from "react-router-dom";
 import Pantry from './Components/Pantry';
+import Preloader from './Components/preloader';
 function App() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
   return (
+    <>
+    {loading ? (<Preloader/>):
+    (
     <>
       <Router>
         <Routes>
@@ -33,6 +47,9 @@ function App() {
             element={<Dashboard />} />
         </Routes>
       </Router>
+    </>
+    )
+    }
     </>
   );
 }
