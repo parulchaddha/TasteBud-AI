@@ -1,9 +1,12 @@
-import React from 'react';
+import React , { useState } from 'react';
 import Navbar from './Navbar'
-
-function Pantry() {
+import Sidebar from './sidebar'
+const Pantry =()=> {
   return (
+    <>
     <Navbar/>
+    <Sidebar/>
+    </>
   );
 }
 
