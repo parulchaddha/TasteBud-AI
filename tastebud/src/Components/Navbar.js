@@ -14,7 +14,7 @@ function Navbar() {
       <div className="navbar-container" style={{
         maxwidth: '1200px',
         width: '100%',
-        marginLeft:'1500px',
+        marginLeft:'210vh',
         margin: '0 auto',
       }}>
         <Link to="/dashboard" className="user-icon" style={{
