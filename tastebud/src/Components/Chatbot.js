@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Chatbot, Loading } from 'react-chatbot-kit';
-import styles from '../css/Chatbot.css';
+import '../css/Chatbot.css';
 
 const SpoonacularChatbot = () => {
   const [inputText, setInputText] = useState('');

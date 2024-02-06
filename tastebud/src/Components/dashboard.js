@@ -1,7 +1,5 @@
 import React ,{useState,useEffect} from 'react';
 import background from '../images/tastebudbg.jpeg';
-import Card from 'react-bootstrap/Card';
-import { Link } from 'react-router-dom';
 import Dashcards from './Dashcards';
 function dashboard() {
 

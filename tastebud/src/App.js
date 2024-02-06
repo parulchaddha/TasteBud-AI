@@ -6,7 +6,7 @@ import Signup from './Components/Signup';
 import Dashboard from './Components/dashboard';
 import Modal from 'react-modal';
 import Chatbot from './Components/Chatbot'
-import styles from './css/Chatbot.css';
+import Dietplans from './Components/Dietplans'
 import {
   BrowserRouter as Router,
   Route,
@@ -50,6 +50,9 @@ function App() {
 
           <Route path="/Chatbot"
             element={<Chatbot />} />
+
+          <Route path="/Dietplans"
+            element={<Dietplans />} /> 
         </Routes>
       </Router>
     </>
