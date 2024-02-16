@@ -113,6 +113,9 @@ function Home() {
           }}
           // onMouseOver={() => setIsHovered(true)}
           // onMouseOut={() => setIsHovered(false)}
+          onClick={() => {
+            navigate('/Dietplans'); 
+        }}
         >
           <Card.Body
             style={{
@@ -132,7 +135,7 @@ function Home() {
                 color:'black'
               }}
             >
-              Daily Diet Plans
+              Diet Plans
             </Card.Title>
           </Card.Body>
         </Card>
