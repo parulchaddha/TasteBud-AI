@@ -7,6 +7,7 @@ import Dashboard from './Components/dashboard';
 import Modal from 'react-modal';
 import Chatbot from './Components/Chatbot'
 import Dietplans from './Components/Dietplans'
+import Diets from './Components/Diet'
 import {
   BrowserRouter as Router,
   Route,
@@ -53,6 +54,9 @@ function App() {
 
           <Route path="/Dietplans"
             element={<Dietplans />} /> 
+
+          <Route path="/Diets"
+            element={<Diets />} /> 
         </Routes>
       </Router>
     </>

@@ -51,8 +51,8 @@ function Home() {
     
     <div style={{
       backgroundImage: `url(${background})`,
-      height: '107.6vh',
-      marginTop: '-70px',
+      height: '110.6vh',
+      marginTop: '-65px',
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
     }}>
@@ -82,7 +82,7 @@ function Home() {
       )}
         {showLogoutModal && <LogoutModal isOpen={showLogoutModal} closeModal={closeLogoutModal} onConfirm={confirmLogout} />}
       <h1 style={{
-        fontSize: isHovered ? '95px' : '90px',
+        fontSize: isHovered ? '95px' : '80px',
         marginLeft: '900px',
         marginTop: '10px',
         fontStyle: 'italic',
