@@ -58,7 +58,7 @@ const RecipeCard = ({ image, heading, servings, cuisines, recipeURL }) => {
             {`Cuisines: ${cuisines ? cuisines.join(', ') : 'N/A'}`}
           </p>
         </div>
-        <button className="view-button" style={{ fontWeight: 'bold', fontSize: '1.2em', backgroundColor: '#D2B48C', alignSelf: 'flex-end' }}>View Recipe</button>
+        <button className="view-button" style={{ fontWeight: 'bold', fontSize: '1.2em', backgroundColor: '#e0bd5d', alignSelf: 'flex-end', color:'black' }}>View Recipe</button>
       </div>
     </div>
   );
