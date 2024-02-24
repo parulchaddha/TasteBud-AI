@@ -6,7 +6,6 @@ function Dashcards() {
   const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
-    // Call the function to fetch user information
     fetchUserInfo();
   }, []);
 
@@ -14,9 +13,9 @@ function Dashcards() {
   const fetchUserInfo = async () => {
     try {
       // Make a request to the Flask endpoint to fetch user information
-      const response = await fetch('http://localhost:5000/user-info', {
+      const response = await fetch('http://localhost:5000/user', {
         method: 'GET',
-        credentials: 'include',  // Include credentials (cookies) with the request
+        credentials: 'include',  
         headers: {
           'Content-Type': 'application/json',
         },
@@ -68,7 +67,7 @@ function Dashcards() {
                 marginRight:'30px'
               }}
             >
-              {userInfo.name || 'N/A'}
+              Name: {userInfo!==null?userInfo.username:null}
             </Card.Title>
           </Card.Body>
         </Card>
@@ -146,7 +145,7 @@ function Dashcards() {
                 justifyContent: 'center',
               }}
             >
-              Email address
+              Email address:{userInfo?.email}
             </Card.Title>
           </Card.Body>
         </Card>

@@ -5,35 +5,32 @@ import { useEffect, useState } from "react";
 import {useNavigate} from 'react-router-dom';
 
 const Login=()=> {
-  
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState('');
+const [email, setEmail] = useState('');
+const [password, setPassword] = useState('');
+const [isLoggedIn, setIsLoggedIn] = useState(false);
+const [username, setUsername] = useState('');
 
-  const navigate = useNavigate();
+const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    const response = await fetch('http://localhost:5000/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
+const handleLogin = async () => {
+  const response = await fetch('http://localhost:5000/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, password }),
+  });
 
-    const data = await response.json();
-    if (data.status === 'success') {
-      localStorage.setItem('username', data.username);
-      setIsLoggedIn(true);
-      setUsername(data.username);
-      navigate('/'); // Redirect to home page
-    }
-    else if (data.status === 'error' && data.message === 'Invalid email or password') {
-      // Display a prompt for incorrect password
-      alert('Incorrect password or email. Please try again.');
-    } 
-  };
+  const data = await response.json();
+  if (data.status === 'success') {
+    setIsLoggedIn(true);
+    navigate('/'); // Redirect to home page
+  }
+  else if (data.status === 'error' && data.message === 'Invalid email or password') {
+    // Display a prompt for incorrect password
+    alert('Incorrect password or email. Please try again.');
+  } 
+};
 
   return (
     <div style={{

@@ -1,8 +1,14 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask import Flask, request, jsonify, session
+from flask_cors import CORS, cross_origin
 import pymysql
+import secrets
+from flask_session import Session
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = secrets.token_hex(16)
+SESSION_TYPE = 'filesystem'
+app.config.from_object(__name__)
+Session(app)
 CORS(app)
 
 # MySQL Configuration
@@ -23,7 +29,10 @@ def execute_query(query, params=None):
     return result
 
 # Login endpoint
+global_username = None
+global_email = None
 @app.route('/login', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def login():
     data = request.get_json()
     email = data.get('email')
@@ -33,6 +42,12 @@ def login():
     result = execute_query(query, (email, password))
 
     if result:
+        global_username = result[0]['username']
+        global_email = email
+        session['username'] = global_username
+        session['email'] = global_email
+        print(global_username)
+        print(global_email)
         return jsonify({"status": "success", "message": "Login successful"})
     else:
         return jsonify({"status": "error", "message": "Invalid email or password"})
@@ -41,46 +56,31 @@ def login():
 @app.route('/signup', methods=['POST'])
 def signup():
     data = request.get_json()
+    username = data.get('username')
     email = data.get('email')
     password = data.get('password')
-    name = data.get('name')
-    username = data.get('username')
 
-    # Check if the email is already registered
-    query = "SELECT * FROM users WHERE email=%s"
-    result = execute_query(query, (email,))
-    if result:
-        return jsonify({"status": "error", "message": "Email is already registered"})
-
-    # Insert new user into the database
-    query = "INSERT INTO users (email, password, name, username) VALUES (%s, %s, %s, %s)"
-    execute_query(query, (email, password, name, username))
-
-    return jsonify({"status": "success", "message": "Signup successful"})
-
-#get user details
-@app.route('/user-info', methods=['GET'])
-def get_user_info():
+    query = "INSERT INTO users (username, email, password) VALUES (%s, %s, %s)"
     try:
-        # Check if the user is logged in (using a session identifier)
-        if 'userid' not in session:
-            return jsonify({"status": "error", "message": "User not logged in"})
-
-        user_id = session['userid']
-
-        # Query the database for user information based on user_id
-        query = "SELECT name, email FROM user WHERE userid=%s"
-        result = execute_query(query, (user_id,))
-
-        if result:
-            user_info = result[0]
-            return jsonify({"status": "success", "user_info": user_info})
-        else:
-            return jsonify({"status": "error", "message": "User not found"})
-
+        execute_query(query, (username, email, password))
+        session['username'] = username
+        session['email'] = email
+        return jsonify({"status": "success", "message": "Signup successful"})
     except Exception as e:
-        print(e)
-        return jsonify({"status": "error", "message": "Internal server error"})
+        return jsonify({"status": "error", "message": str(e)})
 
-if __name__ == '__main__':
+# Endpoint to get user session data
+@app.route('/user', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def get_user():
+    if global_username and global_email:
+        print(global_username)
+        print(global_email)
+        return jsonify({"username": global_username, "email": global_email})
+    elif 'username' in session and 'email' in session:
+        return jsonify({"username": session['username'], "email": session['email']})
+    else:
+        return jsonify({"status": "error", "message": "User not logged in"})
+    
+if __name__ == "__main__":
     app.run(debug=True)

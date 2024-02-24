@@ -17,17 +17,7 @@ const Pantry = () => {
       // If query is empty, clear recipes
       setRecipes([]);
       return;
-    }
-
-    // const fetchRecipes = async () => {
-    //   try {
-    //     const response = await fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${query}&apiKey=40e34375ddaa4e3abdc1e21fa4aabd61`);
-    //     const data = await response.json();
-    //     setRecipes(data.results);
-    //   } catch (error) {
-    //     console.error('Error fetching recipes:', error);
-    //   }
-    // };
+    }    
     const fetchRecipes = async () => {
       try {
         const response = await fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${query}&apiKey=40e34375ddaa4e3abdc1e21fa4aabd61&addRecipeInformation=true`);
