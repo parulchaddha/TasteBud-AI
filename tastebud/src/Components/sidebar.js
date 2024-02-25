@@ -15,7 +15,7 @@ const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [selectedIngredient, setSelectedIngredient] = useState([]);
   const [searchValue, setSearchValue] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState({});
 
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
@@ -25,8 +25,9 @@ const Sidebar = () => {
     setSearchValue(value);
     //Fetch data from Spoonacular API
     try {
-      const response = await fetch(`https://api.spoonacular.com/food/ingredients/autocomplete?query=${value}&apiKey=40e34375ddaa4e3abdc1e21fa4aabd61`);
+      const response = await fetch(`https://api.spoonacular.com/food/ingredients/autocomplete?query=${value}&apiKey=40e34375ddaa4e3abdc1e21fa4aabd61&metaInformation=true`);
       const data = await response.json();
+      console.log("API Response:", data); 
       setSearchResults(data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -51,14 +52,23 @@ const Sidebar = () => {
 
   const content = (
     <div>
-      {selectedIngredient.map(id => (
-        <div key={id} style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
-          <span>{ingredientData.find(item => item.id === id).name}</span>
-          <Button type="text" size="small" icon={<CloseOutlined />} onClick={() => handleDelete(id)} />
-        </div>
-      ))}
+      {selectedIngredient.map(id => {
+        const ingredient = searchResults.find(item => item.id === id);
+        if (ingredient) {
+          return (
+            <div key={id} style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+              <span>{ingredient.name}</span>
+              <Button type="text" size="small" icon={<CloseOutlined />} onClick={() => handleDelete(id)} />
+            </div>
+          );
+        } else {
+          return null; // Skip rendering if ingredient is not found in searchResults
+        }
+      })}
     </div>
   );
+  
+
 
   return (
     <Sider
@@ -96,14 +106,14 @@ const Sidebar = () => {
       color: selectedIngredient.includes(ingredient.id) ? 'white' : 'black',
       display: 'inline-block',
       minWidth: '100px',
-      width: `${ingredient.name.length * 8}px`,
+      width: `${ingredient?.name.length * 8}px`,
       textAlign: 'center',
       lineHeight: '1.5',
       boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
     }}
-    onClick={() => handleClick(ingredient.id)} 
+    onClick={() => handleClick(ingredient?.id)} 
   >
-    {ingredient.name}
+    {ingredient?.name}
   </Button>
 ))}
   </div>

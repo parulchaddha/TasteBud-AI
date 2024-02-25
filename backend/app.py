@@ -71,7 +71,7 @@ def signup():
 @app.route('/user', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def get_user():
-    print(session.get("email"))
+    print(session.get('email'))
     if 'username' in session and 'email' in session:
         return jsonify({"username": session['username'], "email": session['email']})
     else:
