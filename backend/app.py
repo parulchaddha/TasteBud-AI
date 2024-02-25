@@ -9,13 +9,13 @@ app.config['SECRET_KEY'] = secrets.token_hex(16)
 SESSION_TYPE = 'filesystem'
 app.config.from_object(__name__)
 Session(app)
-CORS(app)
+CORS(app, supports_credentials=True)
 
 # MySQL Configuration
 db = pymysql.connect(
     host="localhost",
-    user="root",
-    password="",
+    user="krupesh",
+    password="krupesh",
     database="tastebud",
     cursorclass=pymysql.cursors.DictCursor
 )
@@ -68,20 +68,30 @@ def signup():
         return jsonify({"status": "error", "message": str(e)})
 
 # Endpoint to get user session data
-@app.route('/user', methods=['GET'])
-@cross_origin(supports_credentials=True)
-def get_user():
-    print(session.get('email'))
-    if 'username' in session and 'email' in session:
-        return jsonify({"username": session['username'], "email": session['email']})
+@app.route('/user')
+def user():
+    # Check if the user is logged in
+    if 'email' in session:
+        email = session['email']
+        username = session['username']
+        return jsonify({'email': email, 'username': username})
     else:
-        return jsonify({"status": "error", "message": "User not logged in"})
-    
+        return jsonify({'error': 'Not logged in'}), 401
+def handle_preflight():
+    response = jsonify({'status': 'success'})
+    response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+    response.headers.add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+    response.headers.add('Access-Control-Allow-Credentials', 'true')  # Important for including credentials
+    return response
 @app.route('/logout', methods=['POST'])
 def logout():
     session.pop('username', None)
     session.pop('email', None)
     return jsonify({"status": "success", "message": "Logout successful"})
     
+@app.route('/')
+def index():
+    return 'Welcome to the Flask User Dashboard!'
 if __name__ == "__main__":
     app.run(debug=True)

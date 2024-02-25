@@ -6,8 +6,10 @@ import { Link } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 import {useNavigate} from 'react-router-dom';
 import LogoutModal from './logoutModal';
+import { useUser } from '../contexts/userContext';
 
 function Home() {
+  const {updateUser} = useUser();
   const [isHovered, setIsHovered] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
@@ -41,12 +43,31 @@ function Home() {
     setShowLogoutModal(false);
   };
 
-  const confirmLogout = () => {
-    // Clear user data on logout
-    console.log('Logout button clicked');
-    setIsLoggedIn(false);
-    setShowLogoutModal(false);
+  const confirmLogout = async () => {
+    try {
+      // Call your logout API
+      const logoutResponse = await fetch('http://localhost:5000/logout', {
+        method: 'POST',
+        credentials: 'include',
+      });
+  
+      // Assuming a successful response means the user is logged out
+      if (logoutResponse.ok) {
+        // Clear user data on the client-side
+        updateUser(null); // Assuming updateUser is your context function to update userData
+        setIsLoggedIn(false);
+        console.log('User logged out successfully');
+      } else {
+        console.error('Logout API request failed');
+      }
+  
+      // Close the logout modal or perform other actions
+      setShowLogoutModal(false);
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
   };
+  
   return (
     
     <div style={{

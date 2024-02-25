@@ -8,6 +8,8 @@ import Modal from 'react-modal';
 import Chatbot from './Components/Chatbot'
 import Dietplans from './Components/Dietplans'
 import Diets from './Components/Diet'
+import DashboardTest from './Components/DashboardTest'
+
 import {
   BrowserRouter as Router,
   Route,
@@ -27,6 +29,7 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
   return (
+
     <>
     {loading ? (<Preloader/>):
     (
@@ -57,7 +60,10 @@ function App() {
 
           <Route path="/Diets"
             element={<Diets />} /> 
+          <Route path="/DashboardTest"
+            element={<DashboardTest />} /> 
         </Routes>
+        
       </Router>
     </>
     )

@@ -3,35 +3,54 @@ import {MDBContainer, MDBCol, MDBRow, MDBBtn, MDBIcon, MDBInput, MDBCheckbox } f
 import background from '../images/tastebudbg.jpeg';
 import { useEffect, useState } from "react";
 import {useNavigate} from 'react-router-dom';
+import { useUser } from '../contexts/userContext';
 
 const Login=()=> {
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
 const [isLoggedIn, setIsLoggedIn] = useState(false);
 const [username, setUsername] = useState('');
+const { updateUser } = useUser();
 
 const navigate = useNavigate();
 
 const handleLogin = async () => {
-  const response = await fetch('http://localhost:5000/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email, password }),
-  });
+  try {
+    const response = await fetch('http://localhost:5000/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+      credentials: 'include', // Include credentials for session management
+    });
 
-  const data = await response.json();
-  if (data.status === 'success') {
-    setIsLoggedIn(true);
-    navigate('/'); // Redirect to home page
+    const data = await response.json();
+    if (data.status === 'success') {
+      setIsLoggedIn(true);
+
+      // After successful login, make a subsequent request to '/user'
+      const userResponse = await fetch('http://localhost:5000/user', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // Include credentials for session management
+      });
+
+      const userData = await userResponse.json();
+
+      // Set the user data in the context
+      updateUser(userData);
+      console.log();
+
+      navigate('/'); // Redirect to home page
+    }
+    // ... (rest of your login logic)
+  } catch (error) {
+    console.error('Error during login:', error);
   }
-  else if (data.status === 'error' && data.message === 'Invalid email or password') {
-    // Display a prompt for incorrect password
-    alert('Incorrect password or email. Please try again.');
-  } 
 };
-
   return (
     <div style={{
       backgroundImage: `url(${background})`,
