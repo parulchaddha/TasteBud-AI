@@ -35,9 +35,12 @@ const Sidebar = () => {
     
   };
 
+
   const handleClick = (id) => {
     // Check if the selected ingredient is already in the list of selected ingredients
-    if (selectedIngredient.includes(id)) {
+    const isInSelectedIngredients = selectedIngredient.includes(id);
+  
+    if (isInSelectedIngredients) {
       // If it's already selected, remove it from the list
       setSelectedIngredient(selectedIngredient.filter(item => item !== id));
     } else {
@@ -53,7 +56,14 @@ const Sidebar = () => {
   const content = (
     <div>
       {selectedIngredient.map(id => {
-        const ingredient = searchResults.find(item => item.id === id);
+        // Check if the ingredient is from ingredientData or searchResults
+        const ingredientFromData = ingredientData.find(item => item.id === id);
+        const ingredientFromApi = searchResults.find(item => item.id === id);
+  
+        // Get the ingredient object
+        const ingredient = ingredientFromData || ingredientFromApi;
+  
+        // Render the ingredient if found
         if (ingredient) {
           return (
             <div key={id} style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
@@ -62,7 +72,7 @@ const Sidebar = () => {
             </div>
           );
         } else {
-          return null; // Skip rendering if ingredient is not found in searchResults
+          return null; // Skip rendering if ingredient is not found
         }
       })}
     </div>
