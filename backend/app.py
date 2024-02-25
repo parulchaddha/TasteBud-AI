@@ -42,12 +42,10 @@ def login():
     result = execute_query(query, (email, password))
 
     if result:
-        global_username = result[0]['username']
-        global_email = email
-        session['username'] = global_username
-        session['email'] = global_email
-        print(global_username)
-        print(global_email)
+        session['username'] = result[0]['username']
+        session['email'] = email
+        print(session['username'])
+        print(session['email'])
         return jsonify({"status": "success", "message": "Login successful"})
     else:
         return jsonify({"status": "error", "message": "Invalid email or password"})
@@ -73,14 +71,17 @@ def signup():
 @app.route('/user', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def get_user():
-    if global_username and global_email:
-        print(global_username)
-        print(global_email)
-        return jsonify({"username": global_username, "email": global_email})
-    elif 'username' in session and 'email' in session:
+    print(session.get("email"))
+    if 'username' in session and 'email' in session:
         return jsonify({"username": session['username'], "email": session['email']})
     else:
         return jsonify({"status": "error", "message": "User not logged in"})
+    
+@app.route('/logout', methods=['POST'])
+def logout():
+    session.pop('username', None)
+    session.pop('email', None)
+    return jsonify({"status": "success", "message": "Logout successful"})
     
 if __name__ == "__main__":
     app.run(debug=True)
