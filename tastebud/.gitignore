@@ -6,7 +6,7 @@
 .pnp.js
 
 #sessions
-flask_session
+/backend/flask_session
 # testing
 /coverage
 

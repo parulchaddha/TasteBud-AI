@@ -14,8 +14,8 @@ CORS(app, supports_credentials=True)
 # MySQL Configuration
 db = pymysql.connect(
     host="localhost",
-    user="krupesh",
-    password="krupesh",
+    user="root",
+    password="",
     database="tastebud",
     cursorclass=pymysql.cursors.DictCursor
 )
@@ -29,8 +29,6 @@ def execute_query(query, params=None):
     return result
 
 # Login endpoint
-global_username = None
-global_email = None
 @app.route('/login', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def login():

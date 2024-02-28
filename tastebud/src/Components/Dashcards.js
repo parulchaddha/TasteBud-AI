@@ -1,36 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
-import { Link } from 'react-router-dom';
+import { useUser } from '../contexts/userContext';
 function Dashcards() {
 
-  const [userInfo, setUserInfo] = useState(null);
+  // const [userInfo, setUserInfo] = useState(null);
+
+  // useEffect(() => {
+  //   fetchUserInfo();
+  // }, []);
+
+
+  // const fetchUserInfo = async () => {
+  //   try {
+  //     // Make a request to the Flask endpoint to fetch user information
+  //     const response = await fetch('http://localhost:5000/user', {
+  //       method: 'GET',  
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     });
+
+  //     const data = await response.json();
+
+  //     if (data.status === 'success') {
+  //       setUserInfo(data.user_info);
+  //     } else {
+  //       console.error('Error fetching user information:', data.message);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching user information:', error);
+  //   }
+  // };
+  const { userData } = useUser();
 
   useEffect(() => {
-    fetchUserInfo();
-  }, []);
-
-
-  const fetchUserInfo = async () => {
-    try {
-      // Make a request to the Flask endpoint to fetch user information
-      const response = await fetch('http://localhost:5000/user', {
-        method: 'GET',  
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      const data = await response.json();
-
-      if (data.status === 'success') {
-        setUserInfo(data.user_info);
-      } else {
-        console.error('Error fetching user information:', data.message);
-      }
-    } catch (error) {
-      console.error('Error fetching user information:', error);
-    }
-  };
+    console.log('User Data in Dashboard:', userData); // Check if userData is null or has valid data
+  }, [userData]);
     return(
         <>
             <div style={{ display: 'flex', flexDirection: 'row', marginLeft: '130vh' }}>
@@ -66,7 +71,7 @@ function Dashcards() {
                 marginRight:'30px'
               }}
             >
-              Name: {userInfo!==null?userInfo.username:null}
+              Name: {userData.username}
             </Card.Title>
           </Card.Body>
         </Card>
@@ -144,7 +149,7 @@ function Dashcards() {
                 justifyContent: 'center',
               }}
             >
-              Email address:{userInfo?.email}
+              Email address:{userData.email}
             </Card.Title>
           </Card.Body>
         </Card>

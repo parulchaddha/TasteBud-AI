@@ -20,7 +20,7 @@ const Pantry = () => {
     }    
     const fetchRecipes = async () => {
       try {
-        const response = await fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${query}&apiKey=40e34375ddaa4e3abdc1e21fa4aabd61&addRecipeInformation=true`);
+        const response = await fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${query}&apiKey=40e34375ddaa4e3abdc1e21fa4aabd61&addRecipeInformation=true&number=10`);
         const data = await response.json();
         setRecipes(data.results);
       } catch (error) {
