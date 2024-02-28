@@ -2,35 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import { useUser } from '../contexts/userContext';
 function Dashcards() {
-
-  // const [userInfo, setUserInfo] = useState(null);
-
-  // useEffect(() => {
-  //   fetchUserInfo();
-  // }, []);
-
-
-  // const fetchUserInfo = async () => {
-  //   try {
-  //     // Make a request to the Flask endpoint to fetch user information
-  //     const response = await fetch('http://localhost:5000/user', {
-  //       method: 'GET',  
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //     });
-
-  //     const data = await response.json();
-
-  //     if (data.status === 'success') {
-  //       setUserInfo(data.user_info);
-  //     } else {
-  //       console.error('Error fetching user information:', data.message);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching user information:', error);
-  //   }
-  // };
   const { userData } = useUser();
 
   useEffect(() => {
@@ -149,7 +120,7 @@ function Dashcards() {
                 justifyContent: 'center',
               }}
             >
-              Email address:{userData.email}
+              Email:{userData.email}
             </Card.Title>
           </Card.Body>
         </Card>

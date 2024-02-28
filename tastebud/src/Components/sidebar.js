@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout, Menu, Input, Button, Popover } from 'antd';
 import {
   SearchOutlined,
@@ -11,11 +11,11 @@ const { Sider } = Layout;
 const { SubMenu } = Menu;
 const { Search } = Input;
 
-const Sidebar = () => {
+const Sidebar = ({ setRecipes }) => {
   const [collapsed, setCollapsed] = useState(false);
   const [selectedIngredient, setSelectedIngredient] = useState([]);
   const [searchValue, setSearchValue] = useState('');
-  const [searchResults, setSearchResults] = useState({});
+  const [searchResults, setSearchResults] = useState([]);
 
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
@@ -25,7 +25,7 @@ const Sidebar = () => {
     setSearchValue(value);
     //Fetch data from Spoonacular API
     try {
-      const response = await fetch(`https://api.spoonacular.com/food/ingredients/autocomplete?query=${value}&apiKey=40e34375ddaa4e3abdc1e21fa4aabd61&metaInformation=true`);
+      const response = await fetch(`https://api.spoonacular.com/food/ingredients/autocomplete?query=${value}&apiKey=40e34375ddaa4e3abdc1e21fa4aabd61`);
       const data = await response.json();
       console.log("API Response:", data); 
       setSearchResults(data);
@@ -36,29 +36,50 @@ const Sidebar = () => {
   };
 
 
-  const handleClick = (id) => {
+  const handleClick = (name) => {
     // Check if the selected ingredient is already in the list of selected ingredients
-    const isInSelectedIngredients = selectedIngredient.includes(id);
+    const isInSelectedIngredients = selectedIngredient.includes(name);
   
     if (isInSelectedIngredients) {
       // If it's already selected, remove it from the list
-      setSelectedIngredient(selectedIngredient.filter(item => item !== id));
+      setSelectedIngredient(selectedIngredient.filter(item => item !== name));
     } else {
       // If it's not selected, add it to the list
-      setSelectedIngredient([...selectedIngredient, id]);
+      setSelectedIngredient([...selectedIngredient, name]);
     }
   };
 
-  const handleDelete = (id) => {
-    setSelectedIngredient(selectedIngredient.filter(item => item !== id));
+  const handleDelete = (name) => {
+    setSelectedIngredient(selectedIngredient.filter(item => item !== name));
   };
+  
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        if (selectedIngredient.length === 0) {
+          // Clear recipes if no ingredients selected
+          setRecipes([]);
+          return;
+        }
+  
+        const response = await fetch(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${selectedIngredient.join(",")}&number=10&apiKey=8b1a095b966c474fa8a423f4dec96481`);
+        const data = await response.json();
+        setRecipes(data);
+      } catch (error) {
+        console.error('Error fetching recipes:', error);
+      }
+    };
+  
+    // Fetch recipes when component mounts and when selectedIngredients change
+    fetchRecipes();
+  }, [selectedIngredient.join(",")]);
 
   const content = (
     <div>
-      {selectedIngredient.map(id => {
+      {selectedIngredient.map(name => {
         // Check if the ingredient is from ingredientData or searchResults
-        const ingredientFromData = ingredientData.find(item => item.id === id);
-        const ingredientFromApi = searchResults.find(item => item.id === id);
+        const ingredientFromData = ingredientData.find(item => item.id === name);
+        const ingredientFromApi = searchResults.find(item => item.id === name);
   
         // Get the ingredient object
         const ingredient = ingredientFromData || ingredientFromApi;
@@ -66,9 +87,9 @@ const Sidebar = () => {
         // Render the ingredient if found
         if (ingredient) {
           return (
-            <div key={id} style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
-              <span>{ingredient.name}</span>
-              <Button type="text" size="small" icon={<CloseOutlined />} onClick={() => handleDelete(id)} />
+            <div key={name} style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+              <span>{name}</span>
+              <Button type="text" size="small" icon={<CloseOutlined />} onClick={() => handleDelete(name)} />
             </div>
           );
         } else {
@@ -105,15 +126,15 @@ const Sidebar = () => {
         </Popover>
         {searchResults.length > 0 && (
   <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-  {searchResults.map((ingredient, index) => (
+{searchResults.map((ingredient, index) => (
   <Button
     key={index}
     type="link"
     style={{
       padding: '10px',
       margin: '6px',
-      backgroundColor: selectedIngredient.includes(ingredient.id) ? 'green' : 'transparent', 
-      color: selectedIngredient.includes(ingredient.id) ? 'white' : 'black',
+      backgroundColor: selectedIngredient.includes(ingredient.name) ? 'green' : 'transparent', 
+      color: selectedIngredient.includes(ingredient.name) ? 'white' : 'black',
       display: 'inline-block',
       minWidth: '100px',
       width: `${ingredient?.name.length * 8}px`,
@@ -121,7 +142,7 @@ const Sidebar = () => {
       lineHeight: '1.5',
       boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
     }}
-    onClick={() => handleClick(ingredient?.id)} 
+    onClick={() => handleClick(ingredient?.name)} 
   >
     {ingredient?.name}
   </Button>
@@ -139,8 +160,8 @@ const Sidebar = () => {
             style={{
               padding: '10px',
               margin: '6px',
-              backgroundColor: selectedIngredient.includes(ingredient.id) ? 'green' : 'transparent',
-              color: selectedIngredient.includes(ingredient.id) ? 'white' : 'black',
+              backgroundColor: selectedIngredient.includes(ingredient.name) ? 'green' : 'transparent',
+              color: selectedIngredient.includes(ingredient.name) ? 'white' : 'black',
               display: 'inline-block', // Set display to inline-block
               minWidth: '100px', // Set minimum width to ensure consistent button sizes
               width: `${ingredient.name.length * 8}px`, // Dynamic width based on name length
@@ -148,7 +169,7 @@ const Sidebar = () => {
               lineHeight: '1.5', // Adjust line height to vertically center text
               boxShadow:'2px 2px 4px rgba(0, 0, 0, 0.5)',
             }}
-            onClick={() => handleClick(ingredient.id)}
+            onClick={() => handleClick(ingredient.name)}
           >
             {ingredient.name}
           </Button>

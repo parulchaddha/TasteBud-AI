@@ -52,13 +52,14 @@ def login():
 @app.route('/signup', methods=['POST'])
 def signup():
     data = request.get_json()
-    username = data.get('username')
     email = data.get('email')
     password = data.get('password')
+    name= data.get('name')
+    username = data.get('username')
 
-    query = "INSERT INTO users (username, email, password) VALUES (%s, %s, %s)"
+    query = "INSERT INTO users (username, email, password,name) VALUES (%s, %s, %s,%s)"
     try:
-        execute_query(query, (username, email, password))
+        execute_query(query, (username, email, password,name))
         session['username'] = username
         session['email'] = email
         return jsonify({"status": "success", "message": "Signup successful"})

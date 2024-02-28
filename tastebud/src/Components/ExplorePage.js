@@ -74,7 +74,7 @@ const ExplorePage = () => {
             image={recipe.image}
             heading={recipe.title}
             servings={recipe.servings}
-            cuisines={recipe.cuisines!=[]?recipe.cuisines:'N/A'}
+            cuisines={recipe.cuisines!=[]?recipe.cuisines:"N/A"}
             recipeURL={recipe.sourceUrl}
           />
         ))}
