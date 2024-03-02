@@ -5,7 +5,11 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import '../css/diet.css'; // You can reuse the same CSS file used in Diet.js
 import RecipeCard from './RecipeCard';
+import { Layout, Input } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 
+const { Content } = Layout;
+const { Search } = Input;
 
 
 const categoryImages = [
@@ -27,6 +31,8 @@ const categoryImages = [
 const ExplorePage = () => {
   const [recipes, setRecipes] = useState([]);
   const apiKey = 'ee062ce3dd3745c7816f7ef4f270655b';
+  const [query, setQuery] = useState('');
+  const [recipesFromSearch, setRecipesFromSearch] = useState([]);
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -57,7 +63,21 @@ const ExplorePage = () => {
     slidesToScroll: 4,
   };
 
+  const handleSearch = async (value) => {
+    setQuery(value);
+
+    // Fetch recipes based on the search query
+    try {
+      const response = await fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${value}&apiKey=40e34375ddaa4e3abdc1e21fa4aabd61&addRecipeInformation=true&number=10`);
+      const data = await response.json();
+      setRecipesFromSearch(data.results);
+    } catch (error) {
+      console.error('Error fetching recipes:', error);
+    }
+  };
+  const allRecipes = [...recipesFromSearch,...recipes];
   return (
+    <>
     <div className="diet-container">
       <Slider {...carouselSettings}>
       {categoryImages.map((category, index) => (
@@ -67,19 +87,28 @@ const ExplorePage = () => {
         </div>
       ))}
       </Slider>
+      <div style={{ padding: '16px', width: '90rem', margin: '0 auto' }}>
+  <Search
+    placeholder="Search..."
+    prefix={<SearchOutlined style={{ height: '2rem' }} />}
+    style={{ marginBottom: '16px', height: '2rem' }}
+    onSearch={handleSearch}
+  />
+</div>
       <div className="recipe-container">
-        {recipes.map((recipe) => (
+      {allRecipes.map((recipe) => (
           <RecipeCard
             key={recipe.id}
             image={recipe.image}
             heading={recipe.title}
             servings={recipe.servings}
-            cuisines={recipe.cuisines!=[]?recipe.cuisines:"N/A"}
+            cuisines={recipe.cuisines}
             recipeURL={recipe.sourceUrl}
           />
         ))}
       </div>
     </div>
+    </>
   );
 };
 

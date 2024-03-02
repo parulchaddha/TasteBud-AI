@@ -5,7 +5,6 @@ import Login from './Components/Login';
 import Signup from './Components/Signup';
 import Dashboard from './Components/dashboard';
 import Modal from 'react-modal';
-import Chatbot from './Components/Chatbot'
 import Diet from './Components/Diet';
 
 
@@ -52,10 +51,6 @@ function App() {
 
           <Route path="/Dashboard"
             element={<Dashboard />} />
-
-          <Route path="/Chatbot"
-            element={<Chatbot />} />
-
 
           <Route path="/explore"
             element={<ExplorePage />} /> 
