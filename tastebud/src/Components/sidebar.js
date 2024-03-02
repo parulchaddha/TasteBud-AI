@@ -16,6 +16,11 @@ const Sidebar = ({ setRecipes }) => {
   const [selectedIngredient, setSelectedIngredient] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const [popoverVisible, setPopoverVisible] = useState(false);
+
+  const togglePopover = () => {
+    setPopoverVisible(!popoverVisible);
+  };
 
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
@@ -99,6 +104,16 @@ const Sidebar = ({ setRecipes }) => {
     </div>
   );
   
+  const popoverContent = (
+    <div>
+        {selectedIngredient.map(name => (
+          <li key={name}>
+            {name}
+            <Button type="text" size="small" icon={<CloseOutlined />} onClick={() => handleDelete(name)} />
+          </li>
+        ))}
+    </div>
+  );
 
 
   return (
@@ -121,7 +136,7 @@ const Sidebar = ({ setRecipes }) => {
           value={searchValue}
           onSearch={handleSearch}
         />
-        <Popover placement="bottomRight" content={content} trigger="click">
+        <Popover placement="bottomRight" content={popoverContent} trigger="click" visible={popoverVisible} onVisibleChange={togglePopover}>
           <Button type="link" icon={<ShoppingCartOutlined />} />
         </Popover>
         {searchResults.length > 0 && (
