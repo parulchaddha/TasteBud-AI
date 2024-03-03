@@ -28,39 +28,34 @@ const categoryImages = [
   // Add more categories as needed
 ];
 
+
+
 const ExplorePage = () => {
   const [recipes, setRecipes] = useState([]);
-  const apiKey = 'ee062ce3dd3745c7816f7ef4f270655b';
+  const apiKey = 'db230d5f237e44e0af4e0f54dee5a2e7';
   const [query, setQuery] = useState('');
   const [recipesFromSearch, setRecipesFromSearch] = useState([]);
 
   useEffect(() => {
-    const fetchRecipes = async () => {
-      try {
-        const response = await fetch(
-          `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&number=10&addRecipeInformation=true`
-        );
+    // Fetch random recipes on component mount
+    fetchRandomRecipes();
+  }, []);
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch recipes');
-        }
+  const fetchRandomRecipes = async () => {
+    try {
+      const response = await fetch(
+        `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=10&addRecipeInformation=true`
+      );
 
-        const data = await response.json();
-        setRecipes(data.results);
-      } catch (error) {
-        console.error(error);
+      if (!response.ok) {
+        throw new Error('Failed to fetch random recipes');
       }
-    };
 
-    fetchRecipes();
-  }, [apiKey]);
-
-  const carouselSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 6,
-    slidesToScroll: 4,
+      const data = await response.json();
+      setRecipes(data.recipes);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleSearch = async (value) => {
@@ -75,39 +70,62 @@ const ExplorePage = () => {
       console.error('Error fetching recipes:', error);
     }
   };
-  const allRecipes = [...recipesFromSearch,...recipes];
+
+  const handleCategoryClick = async (category) => {
+    try {
+      const response = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&number=10&addRecipeInformation=true&type=${category.toLowerCase()}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch recipes for ${category}`);
+      }
+      const data = await response.json();
+      setRecipes(data.results);
+    } catch (error) {
+      console.error('Error fetching category recipes:', error);
+    }
+  };
+
+  const carouselSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 6,
+    slidesToScroll: 4,
+  };
+
+  const allRecipes = [...recipesFromSearch, ...recipes];
+
   return (
     <>
-    <div className="diet-container">
+      <div className="diet-container">
       <Slider {...carouselSettings}>
-      {categoryImages.map((category, index) => (
-        <div key={index} className="carousel-item">
-          <img src={category.image} alt={category.name} className="category-image" />
-          <p className="category-name">{category.name}</p>
-        </div>
-      ))}
-      </Slider>
-      <div style={{ padding: '16px', width: '90rem', margin: '0 auto' }}>
-  <Search
-    placeholder="Search..."
-    prefix={<SearchOutlined style={{ height: '2rem' }} />}
-    style={{ marginBottom: '16px', height: '2rem' }}
-    onSearch={handleSearch}
-  />
-</div>
-      <div className="recipe-container">
-      {allRecipes.map((recipe) => (
-          <RecipeCard
-            key={recipe.id}
-            image={recipe.image}
-            heading={recipe.title}
-            servings={recipe.servings}
-            cuisines={recipe.cuisines}
-            recipeURL={recipe.sourceUrl}
+          {categoryImages.map((category, index) => (
+            <div key={index} className="carousel-item" onClick={() => handleCategoryClick(category.name)}>
+              <img src={category.image} alt={category.name} className="category-image" />
+              <p className="category-name">{category.name}</p>
+            </div>
+          ))}
+        </Slider>
+        <div style={{ padding: '16px', width: '90rem', margin: '0 auto' }}>
+          <Search
+            placeholder="Search..."
+            prefix={<SearchOutlined style={{ height: '2rem' }} />}
+            style={{ marginBottom: '16px', height: '2rem' }}
+            onSearch={handleSearch}
           />
-        ))}
+        </div>
+        <div className="recipe-container">
+          {allRecipes.map((recipe) => (
+            <RecipeCard
+              key={recipe.id}
+              image={recipe.image}
+              heading={recipe.title}
+              servings={recipe.servings}
+              cuisines={recipe.cuisines}
+              recipeURL={recipe.sourceUrl}
+            />
+          ))}
+        </div>
       </div>
-    </div>
     </>
   );
 };
