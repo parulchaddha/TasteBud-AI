@@ -6,7 +6,7 @@ import Signup from './Components/Signup';
 import Dashboard from './Components/dashboard';
 import Modal from 'react-modal';
 import Diet from './Components/Diet';
-
+import Detailsboard from './Components/Detailsboard';
 
 import {
   BrowserRouter as Router,
@@ -60,6 +60,9 @@ function App() {
 
           <Route path="/diet"
             element={<Imagecarousel />} /> 
+
+          <Route path="/detailsboard"
+            element={<Detailsboard />} /> 
         </Routes>
         
       </Router>
