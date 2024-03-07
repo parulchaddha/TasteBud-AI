@@ -1,6 +1,6 @@
 
   /* Update styles for links */
-  a:link,
+  /* a:link,
   a:visited {
     text-decoration: none;
     color: white;
@@ -17,7 +17,7 @@
   }
   
   /* Hamburger icon */
-  .sidebar {
+  /* .sidebar {
     width: 300px;
     height: 100vh;
     background-color: #333;
@@ -25,17 +25,17 @@
     padding: 20px;
     position: fixed;
     transition: width 0.3s ease; /* Add smooth transition for width */
-  }
+  /* } */
   
-  .sidebar h2 {
+  /* .sidebar h2 {
     margin-bottom: 20px;
     display: flex;
     justify-content:flex-start;
     align-items: center;
     margin-left: 5px;
   }
-  
-  .sidebar-link {
+   */
+  /* .sidebar-link {
     text-decoration: none;
     color: white;
     font-size: 18px;
@@ -49,13 +49,13 @@
     background-color: white;
     color: black;
   }
-  
-  .icon {
+   */
+  /* .icon {
     margin-right: 10px;
   }
   
   /* Open state styles */
-  .sidebar.open {
+  /* .sidebar.open {
     width: 250px;
   }
 
@@ -63,16 +63,5 @@
     cursor: pointer;
     font-size: 24px;
     transition: right 0.3s ease; /* Add smooth transition for right position */
-    margin-left: 5px; /* Adjust margin for less distance */
-  }
-  /* Media query for smaller screens */
-  @media screen and (max-width: 768px) {
-    .sidebar {
-      width: 0;
-      overflow: hidden;
-    }
-  
-    .sidebar.open {
-      width: 250px;
-    }
-  }
+    /* margin-left: 5px; Adjust margin for less distance
+  }   */
