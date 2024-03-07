@@ -46,6 +46,10 @@ const handleLogin = async () => {
 
       navigate('/'); // Redirect to home page
     }
+    else if (data.status === 'error' && data.message === 'Invalid email or password') {
+      // Display a prompt for incorrect password
+      alert('Incorrect password or email. Please try again.');
+    }
     // ... (rest of your login logic)
   } catch (error) {
     console.error('Error during login:', error);
