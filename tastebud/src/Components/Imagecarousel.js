@@ -46,7 +46,7 @@ const Imagecarousel = () => {
 
   return (
     <div className="product-carousel">
-      <div className="title">
+      <div className="title_car">
         <h1>Choose a Diet Plan</h1>
       </div>
 

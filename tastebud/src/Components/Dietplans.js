@@ -49,7 +49,7 @@ const Imagecarousel = () => {
 
         <div className="product-carousel">
 
-            <div className='title'><h1>Choose a Diet Plan</h1></div>
+            <div className='title'><h1 >Choose a Diet Plan</h1></div>
 
 
 

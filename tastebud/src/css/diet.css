@@ -1,3 +1,6 @@
+
+
+
 .diet-container {
     text-align: center;
   }
@@ -16,6 +19,11 @@
     border-radius: 50%;
   }
   
+  .diet-heading {
+    color: #fe9e0d;
+    font-family: cursive;
+  }
+
   .category-image {
     width: 100px;
     height: 100px;
