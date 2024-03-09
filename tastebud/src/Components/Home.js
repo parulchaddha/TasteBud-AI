@@ -55,7 +55,7 @@ function Home() {
     <div style={{
       backgroundImage: `url(${background})`,
       height: '110.6vh',
-      marginTop: '-65px',
+      marginTop: '-75px',
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
     }}>
@@ -114,8 +114,6 @@ function Home() {
             transition: 'transform 0.2s, box-shadow 0.2s',
             boxShadow: isHovered ? '8px 8px 16px rgba(0, 0, 0, 1.0)' : '4px 4px 8px rgba(0, 0, 0, 0.8)',
           }}
-          // onMouseOver={() => setIsHovered(true)}
-          // onMouseOut={() => setIsHovered(false)}
           onClick={() => {
             navigate('/diet');
         }}
@@ -126,7 +124,7 @@ function Home() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              marginLeft:'30px'
+              marginLeft:'rem'
             }}
           >
             <Card.Title
@@ -234,17 +232,6 @@ function Home() {
           </Card.Body>
         </Card>
       </div>
-
-
-      <div style={{ display: 'flex', flexDirection: 'row', marginLeft: '50px',marginTop:'-40px'}}>
-        <Button style={{ marginRight: '50px', backgroundColor:'#e0bd5d', color: 'black', fontSize: '18px', padding: '10px 20px', borderRadius: '10px',boxShadow:'8px 8px 16px rgba(0, 0, 0, 1.0)' }}>
-          Help??
-        </Button>
-        <Button style={{ backgroundColor: '#e0bd5d', color: 'black', fontSize: '18px', padding: '10px 20px' , borderRadius: '10px',boxShadow:'8px 8px 16px rgba(0, 0, 0, 1.0)'}}>
-          About us 👩‍💻
-        </Button>
-      </div>
-
     </div>
   );
 }

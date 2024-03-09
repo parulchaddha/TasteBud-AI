@@ -78,7 +78,7 @@ const Diet = () => {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 8,
+    slidesToShow: 10,
     slidesToScroll: 4,
   };
 

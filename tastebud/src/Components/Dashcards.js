@@ -106,21 +106,20 @@ function Dashcards() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              
             }}
           >
             <Card.Title
               style={{
                 fontSize: '28px',
-                fontStyle: 'bold,italic',
                 fontFamily: 'cursive',
-                color:'black',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                color: 'black',
+                textAlign: 'center',
+                maxWidth: '130%', // Limiting width to 90% of the container
+                margin: '0 auto',
               }}
             >
-              Email:{userData.email}
+              Email:
+              <br/>{userData.email}
             </Card.Title>
           </Card.Body>
         </Card>

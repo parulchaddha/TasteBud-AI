@@ -65,7 +65,7 @@ const handleLogin = async () => {
   const data = await response.json();
   if (data.status === 'success') {
     setIsLoggedIn(true);
-    navigate('/'); // Redirect to home page
+    navigate('/home'); // Redirect to home page
   }
   else if (data.status === 'error' && data.message === 'Invalid email or password') {
     // Display a prompt for incorrect password

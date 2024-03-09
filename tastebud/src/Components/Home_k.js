@@ -21,13 +21,13 @@ const Home_k = () => {
           < img src={BannerBackground} alt="" />
         </div>
         <div className="home-text-section">
-          <h1 className="primary-heading">
+          <h1 className="primary-heading" style={{marginLeft:'10vh'}}>
           "Life is a combination of magic and pasta."
           </h1>
-          <p className="primary-text">
+          <p className="primary-text" style={{marginLeft:'10vh'}}>
           Cooking is not just about making food. It's about creating a moment that lasts a lifetime.
           </p>
-          <button className="secondary-button" onClick={() => handleRecipeButtonClick()}>
+          <button className="secondary-button" onClick={() => handleRecipeButtonClick()} style={{marginLeft:'10vh'}}>
             Get Started <FiArrowRight />{" "}
           </button>
         </div>

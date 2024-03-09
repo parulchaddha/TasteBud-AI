@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css'
 import { UserProvider } from './contexts/userContext';
+import '@fortawesome/fontawesome-svg-core/styles.css'; // import Font Awesome CSS
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

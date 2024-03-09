@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
 const RecipeCard = ({ id, image, heading, servings, cuisines, recipeURL }) => {
   const [liked, setLiked] = useState(false);
@@ -59,7 +61,7 @@ const RecipeCard = ({ id, image, heading, servings, cuisines, recipeURL }) => {
           }}
         >
           {/* Font Awesome Heart Icon */}
-          <i className={`fas fa-heart`} style={{ fontSize: liked ? '1.5em' : '1em', color: liked ? 'red' : 'black' }}></i>
+          <FontAwesomeIcon icon={faHeart} style={{ fontSize: liked ? '1.5em' : '1em', color: liked ? 'red' : 'black' }} />
         </div>
       </div>
 

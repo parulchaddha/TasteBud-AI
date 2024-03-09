@@ -7,9 +7,9 @@ function Navbar() {
   return (
     <nav className="navbar" style={{
       backgroundColor: '#e0bd5d',
-      padding: '15px',
+      padding: '12px',
       display: 'flex',
-      justifyContent:'flex-end'
+      justifyContent:'flex-end',
     }}>
       <div className="navbar-container" style={{
         maxwidth: '1200px',

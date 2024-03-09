@@ -369,7 +369,7 @@ const Navbar_k = () => {
 
   return (
     <nav>
-      <div className="nav-logo-container">
+      <div className="nav-logo-container" style={{marginLeft:'10vh'}}>
         <img src={Untitled} alt="" />
       </div>
       <div className="navbar-links-container">

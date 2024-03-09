@@ -88,7 +88,7 @@ const ExplorePage = () => {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 6,
+    slidesToShow: 10,
     slidesToScroll: 4,
   };
 

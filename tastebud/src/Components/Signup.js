@@ -30,7 +30,7 @@ const Signup = () => {
       localStorage.setItem('username', data.username);
       setIsLoggedIn(true);
       setUsername(data.username);
-      navigate('/'); // Redirect to home page
+      navigate('/home'); // Redirect to home page
     }
   };
 
