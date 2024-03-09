@@ -15,44 +15,61 @@ const { updateUser } = useUser();
 const navigate = useNavigate();
 
 const handleLogin = async () => {
-  try {
-    const response = await fetch('http://localhost:5000/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-      credentials: 'include', // Include credentials for session management
-    });
+  // try {
+  //   const response = await fetch('http://localhost:5000/login', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({ email, password }),
+  //     credentials: 'include', // Include credentials for session management
+  //   });
 
-    const data = await response.json();
-    if (data.status === 'success') {
-      setIsLoggedIn(true);
+  //   const data = await response.json();
+  //   if (data.status === 'success') {
+  //     setIsLoggedIn(true);
 
-      // After successful login, make a subsequent request to '/user'
-      const userResponse = await fetch('http://localhost:5000/user', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include', // Include credentials for session management
-      });
+  //     // After successful login, make a subsequent request to '/user'
+  //     const userResponse = await fetch('http://localhost:5000/user', {
+  //       method: 'GET',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       credentials: 'include', // Include credentials for session management
+  //     });
 
-      const userData = await userResponse.json();
+  //     const userData = await userResponse.json();
 
-      // Set the user data in the context
-      updateUser(userData);
-      console.log();
+  //     // Set the user data in the context
+  //     updateUser(userData);
+  //     console.log();
 
-      navigate('/'); // Redirect to home page
-    }
-    else if (data.status === 'error' && data.message === 'Invalid email or password') {
-      // Display a prompt for incorrect password
-      alert('Incorrect password or email. Please try again.');
-    }
-    // ... (rest of your login logic)
-  } catch (error) {
-    console.error('Error during login:', error);
+  //     navigate('/'); // Redirect to home page
+  //   }
+  //   else if (data.status === 'error' && data.message === 'Invalid email or password') {
+  //     // Display a prompt for incorrect password
+  //     alert('Incorrect password or email. Please try again.');
+  //   }
+  //   // ... (rest of your login logic)
+  // } catch (error) {
+  //   console.error('Error during login:', error);
+  // }
+  const response = await fetch('http://localhost:5000/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, password }),
+  });
+
+  const data = await response.json();
+  if (data.status === 'success') {
+    setIsLoggedIn(true);
+    navigate('/'); // Redirect to home page
+  }
+  else if (data.status === 'error' && data.message === 'Invalid email or password') {
+    // Display a prompt for incorrect password
+    alert('Incorrect password or email. Please try again.');
   }
 };
   return (
