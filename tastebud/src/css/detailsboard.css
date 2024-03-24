@@ -18,7 +18,7 @@
   }
   
   /* Hamburger icon */
-  /* .sidebar {
+   /*.sidebar {
     width: 300px;
     height: 100vh;
     background-color: #333;
@@ -26,17 +26,17 @@
     padding: 20px;
     position: fixed;
     transition: width 0.3s ease; /* Add smooth transition for width */
-  /* } */
+   /*}
   
-  /* .sidebar h2 {
+   .sidebar h2 {
     margin-bottom: 20px;
     display: flex;
     justify-content:flex-start;
     align-items: center;
     margin-left: 5px;
   }
-   */
-  /* .sidebar-link {
+   
+   .sidebar-link {
     text-decoration: none;
     color: white;
     font-size: 18px;
@@ -50,8 +50,8 @@
     background-color: white;
     color: black;
   }
-   */
-  /* .icon {
+   
+   .icon {
     margin-right: 10px;
   }
   
@@ -64,5 +64,53 @@
     cursor: pointer;
     font-size: 24px;
     transition: right 0.3s ease; /* Add smooth transition for right position */
-    /* margin-left: 5px; Adjust margin for less distance
-  }   */
+    /* margin-left: 5px; Adjust margin for less distance */
+  /*}   */
+
+
+
+
+  /* DetailsBoard.css */
+
+.details-board-container {
+  display: flex;
+}
+
+.sidebar {
+  height: 100vh;
+  width: 250px;
+  background-color: #f5702d;
+  padding-top: 20px;
+  color: white;
+}
+
+.sidebar h2 {
+  text-align: center;
+}
+
+.sidebar a {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: white;
+}
+
+.sidebar a:hover {
+  background-color: #faf8f8;
+  color: #f5702d;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+
+
+
+
+
+
+
+
+

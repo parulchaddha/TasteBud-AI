@@ -109,7 +109,7 @@ import './App.css';
 import React, {useState,useEffect} from 'react';
 import Preloader from './Components/preloader';
 import HomeGroup from "./Components/homegroup";
-// import Detailsboard from './Components/Detailsboard';
+import Detailsboard from './Components/Detailsboard';
 
 import Home from "./Components/Home";
 import Login from "./Components/Login";
@@ -184,8 +184,8 @@ function App() {
           <Route path="/diet"
             element={<Imagecarousel />} /> 
 
-          {/* <Route path="/detailsboard"
-            element={<Detailsboard />} />  */}
+          { <Route path="/detailsboard"
+            element={<Detailsboard />} />  }
 
         
         </Routes>
