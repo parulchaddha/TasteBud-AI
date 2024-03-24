@@ -1,9 +1,10 @@
 import React from 'react';
-import {MDBContainer, MDBCol, MDBRow, MDBBtn, MDBIcon, MDBInput, MDBCheckbox } from 'mdb-react-ui-kit';
+import {MDBContainer, MDBCol, MDBRow, MDBBtn, MDBInput,MDBCard,MDBCardBody } from 'mdb-react-ui-kit';
 import background from '../images/tastebudbg.jpeg';
 import { useEffect, useState } from "react";
 import {useNavigate} from 'react-router-dom';
 import { useUser } from '../contexts/userContext';
+import Background from "../Assets/blob.svg";
 
 const Login=()=> {
 const [email, setEmail] = useState('');
@@ -73,47 +74,22 @@ const handleLogin = async () => {
   }
 };
   return (
-    <div style={{
-      backgroundImage: `url(${background})`,
-      height: '103vh',
-      marginTop: '-70px',
-      backgroundSize: 'cover',
-      backgroundRepeat: 'no-repeat', 
-    }}>
-    <MDBContainer fluid className="p-3 my-5 h-custom" style={{marginTop:'100px'}}>
-
-      <MDBRow>
-
-        <MDBCol col='10' md='6'>
-          {/* <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" class="img-fluid" alt="Sample image" /> */}
-        </MDBCol>
-
-        <MDBCol col='4' md='3' style={{marginLeft:'200px'}}>
-          <br/>
-          <br/>
-          <h1 style={{fontFamily:'cursive',fontStyle:'italic,bold',marginLeft:'115px',fontSize:'65px',color:'black'}}>Login</h1>
-          <br/>
-          <br/>
-          <MDBInput  style={{ outline: '2px solid black' }} wrapperClass='mb-4' label='Email address' onChange={(e) => setEmail(e.target.value)} id='formControlLg' type='email' size="lg"/>
-          <MDBInput  style={{ outline: '2px solid black' }} wrapperClass='mb-4' label='Password' onChange={(e) => setPassword(e.target.value)} id='formControlLg' type='password' size="lg"/>
-
-          <div className="d-flex justify-content-between mb-4">
-            <a href="!#" style={{color:'black',fontStyle:'oblique'}}>Forgot password?</a>
-          </div>
-
-          <div className='text-center text-md-start mt-4 pt-2'>
-            <MDBBtn className="mb-0 px-5" size='lg' 
-            style={{backgroundColor: '#e0bd5d', color: 'black',boxShadow:'8px 8px 16px rgba(0, 0, 0, 1.0)'}} onClick={handleLogin}>
-            Login</MDBBtn>
-            <p className="small fw-bold mt-2 pt-1 mb-2" style={{color:'black'}}>Don't have an account? <a style={{color:'red'}} href="Signup" >Register</a></p>
-          </div>
-
-        </MDBCol>
-
-      </MDBRow>
-
-    </MDBContainer>
-    </div>
+    <MDBContainer className="d-flex justify-content-center align-items-center vh-100" style={{ backgroundImage: `url(${Background})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', paddingTop: '50px' }}>
+    <MDBCard style={{ maxWidth: '400px', boxShadow: '0px 0px 8px rgba(0.5, 0.5, 0.5, 0.5)'}}>
+      <MDBCardBody>
+        <h1 className="text-center mb-4" style={{ fontFamily: 'cursive', fontStyle: 'italic', fontWeight: 'bold', fontSize: '3rem', color: 'black' }}>Login</h1>
+        <MDBInput className="mb-4" label='Email address' onChange={(e) => setEmail(e.target.value)} type='email' />
+        <MDBInput className="mb-4" label='Password' onChange={(e) => setPassword(e.target.value)} type='password' />
+        <div className="d-flex justify-content-between mb-4">
+          <a href="!#" style={{ color: 'black', fontStyle: 'oblique' }}>Forgot password?</a>
+        </div>
+        <div className='text-center mt-4'>
+          <MDBBtn className="px-5 me-2" size='sm' style={{ backgroundColor: '#FFA726', color: 'black', boxShadow: '4px 4px 8px rgba(0, 0, 0, 0.5)' }} onClick={handleLogin}>Login</MDBBtn>
+          <p className="small fw-bold mt-2 mb-2" style={{ color: 'black' }}>Don't have an account? <a style={{ color: 'red' }} href="Signup">Register</a></p>
+        </div>
+      </MDBCardBody>
+    </MDBCard>
+  </MDBContainer>
   );
 }
 
