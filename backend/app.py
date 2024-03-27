@@ -3,6 +3,7 @@ from flask_cors import CORS, cross_origin
 import pymysql
 import secrets
 from flask_session import Session
+import re
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = secrets.token_hex(16)
@@ -54,18 +55,58 @@ def signup():
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
-    name= data.get('name')
+    name = data.get('name')
     username = data.get('username')
 
-    query = "INSERT INTO users (username, email, password,name) VALUES (%s, %s, %s,%s)"
+    # Check for valid email
+    if not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+        return jsonify({"status": "error", "message": "Invalid email address!"})
+
+    # Check for valid username
+    if not re.match(r'[A-Za-z0-9]+', username):
+        return jsonify({"status": "error", "message": "Username must contain only characters and numbers!"})
+
+    # Check for empty fields
+    if not username or not password or not email:
+        return jsonify({"status": "error", "message": "Please fill out the form!"})
+
+    # Password rules validation
+    if not (len(password) >= 8 and re.search(r'[A-Z]', password) and re.search(r'[a-z]', password) and re.search(r'\d', password) and re.search(r'[^A-Za-z0-9]', password)):
+        return jsonify({"status": "error", "message": "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one digit, and one special character!"})
+
+    # Check if email already exists
+    query = "SELECT * FROM users WHERE email = %s"
+    result = execute_query(query, (email,))
+    if result:
+        return jsonify({"status": "error", "message": "Email already exists!"})
+
+    # Check if username already exists
+    query = "SELECT * FROM users WHERE username = %s"
+    result = execute_query(query, (username,))
+    if result:
+        return jsonify({"status": "error", "message": "Username already exists!"})
+
+    # If email, username, and password rules are satisfied, proceed with signup
+    query = "INSERT INTO users (username, email, password, name) VALUES (%s, %s, %s, %s)"
     try:
-        execute_query(query, (username, email, password,name))
-        session['username'] = username
-        session['email'] = email
-        return jsonify({"status": "success", "message": "Signup successful"})
+        cursor = db.cursor()
+        cursor.execute(query, (username, email, password, name))
+        db.commit()
+        user_id = cursor.lastrowid  # Get the auto-incremented user ID
+        cursor.close()
+        session['user_id'] = user_id  # Store user ID in session
+        return jsonify({"status": "success", "message": "Signup successful", "user_id": user_id})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)})
+    # try:
+    #     execute_query(query, (username, email, password, name))
+    #     session['username'] = username
+    #     session['email'] = email
+    #     return jsonify({"status": "success", "message": "Signup successful"})
+    # except Exception as e:
+    #     return jsonify({"status": "error", "message": str(e)})
 
+    
 # Endpoint to get user session data
 @app.route('/user')
 def user():
@@ -73,9 +114,11 @@ def user():
     if 'email' in session:
         email = session['email']
         username = session['username']
+        print(email)
+        print(username)
         return jsonify({'email': email, 'username': username})
     else:
-        return jsonify({'error': 'Not logged in'}), 401
+        return jsonify({'error': 'Not logged in'}),401
 def handle_preflight():
     response = jsonify({'status': 'success'})
     response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
