@@ -30,10 +30,13 @@ const Signup = () => {
   
     const data = await response.json();
     if (data.status === 'success') {
+      localStorage.setItem('user_id', data.user_id);
       localStorage.setItem('username', data.username);
+      localStorage.setItem('email', data.email);
+      localStorage.setItem('name', data.name);
       setIsLoggedIn(true);
       setUsername(data.username);
-      navigate('/home'); // Redirect to home page
+      navigate('/home');// Redirect to home page
     } else if (data.status === 'error') {
       // Display alert with error message
       alert(data.message);

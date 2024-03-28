@@ -75,38 +75,47 @@ def signup():
         return jsonify({"status": "error", "message": "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one digit, and one special character!"})
 
     # Check if email already exists
-    query = "SELECT * FROM users WHERE email = %s"
-    result = execute_query(query, (email,))
-    if result:
-        return jsonify({"status": "error", "message": "Email already exists!"})
-
-    # Check if username already exists
-    query = "SELECT * FROM users WHERE username = %s"
-    result = execute_query(query, (username,))
-    if result:
-        return jsonify({"status": "error", "message": "Username already exists!"})
-
-    # If email, username, and password rules are satisfied, proceed with signup
-    query = "INSERT INTO users (username, email, password, name) VALUES (%s, %s, %s, %s)"
     try:
+        query = "SELECT * FROM users WHERE email = %s"
+        result = execute_query(query, (email,))
+        if result:
+            return jsonify({"status": "error", "message": "Email already exists!"})
+
+        # Check if username already exists
+        query = "SELECT * FROM users WHERE username = %s"
+        result = execute_query(query, (username,))
+        if result:
+            return jsonify({"status": "error", "message": "Username already exists!"})
+
+        # If email, username, and password rules are satisfied, proceed with signup
+        query = "INSERT INTO users (username, email, password, name) VALUES (%s, %s, %s, %s)"
         cursor = db.cursor()
         cursor.execute(query, (username, email, password, name))
         db.commit()
         user_id = cursor.lastrowid  # Get the auto-incremented user ID
         cursor.close()
         session['user_id'] = user_id  # Store user ID in session
-        return jsonify({"status": "success", "message": "Signup successful", "user_id": user_id})
+        return jsonify({"status": "success", "message": "Signup successful", "user_id": user_id, "username": username, "name": name, "email": email})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)})
-    # try:
-    #     execute_query(query, (username, email, password, name))
-    #     session['username'] = username
-    #     session['email'] = email
-    #     return jsonify({"status": "success", "message": "Signup successful"})
-    # except Exception as e:
-    #     return jsonify({"status": "error", "message": str(e)})
 
-    
+@app.route('/setcookies', methods=['POST'])
+def set_cookies():
+    data = request.get_json()
+    email = data.get('email')
+    username = data.get('username')
+    user_id = data.get('user_id')
+    name = data.get('name')
+
+    if not (email and username and user_id and name):
+        return jsonify({"status": "error", "message": "Missing user data"})
+
+    resp = make_response("Cookies have been set.")
+    resp.set_cookie('email', email)
+    resp.set_cookie('username', username)
+    resp.set_cookie('user_id', str(user_id))
+    resp.set_cookie('name', name)
+    return resp   
 # Endpoint to get user session data
 @app.route('/user')
 def user():
