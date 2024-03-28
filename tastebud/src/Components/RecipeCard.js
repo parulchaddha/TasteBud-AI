@@ -4,16 +4,92 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
 const RecipeCard = ({ id, image, heading, servings, cuisines, recipeURL }) => {
   const [liked, setLiked] = useState(false);
+  const [loading, setLoading] = useState(false);
+  // const handleLikeClick = () => {
+  //   setLiked(!liked);
+  //   const user_id = localStorage.getItem('user_id'); // Fetch user ID from local storage
+  //   const data = { user_id, recipe_id: id };
+  //   const url = 'http://localhost:5000/like_recipe'; // Flask route for liking recipe
+  //   // Send POST request to Flask route
+  //   fetch(url, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify(data),
+  //   })
+  //     .then(response => response.json())
+  //     .then(data => console.log(data))
+  //     .catch(error => console.error('Error:', error));
+  // };
 
+  // const handleDislikeClick = () => {
+  //   const user_id = localStorage.getItem('user_id'); // Fetch user ID from local storage
+  //   const data = { user_id, recipe_id: id };
+  //   const url = 'http://localhost:5000/dislike_recipe'; // Flask route for disliking recipe
+  //   // Send POST request to Flask route
+  //   fetch(url, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify(data),
+  //   })
+  //     .then(response => response.json())
+  //     .then(data => console.log(data))
+  //     .catch(error => console.error('Error:', error));
+  // };
   const handleLikeClick = () => {
-    // Toggle the liked state
-    setLiked(!liked);
-
-    // TODO: Store the liked recipe ID in local storage or any state management solution
-    // You can use browser's local storage or some state management library like Redux.
-    // Example: localStorage.setItem('likedRecipes', JSON.stringify([...likedRecipes, id]));
+    if (!loading) {
+      setLoading(true);
+      const user_id = localStorage.getItem('user_id');
+      const data = { user_id, recipe_id: id };
+      const url = liked ? 'http://localhost:5000/dislike_recipe' : 'http://localhost:5000/like_recipe';
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          setLiked(!liked); // Toggle liked state
+          setLoading(false);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          setLoading(false);
+        });
+    }
   };
-
+  
+  const handleDislikeClick = () => {
+    if (!loading) {
+      setLoading(true);
+      const user_id = localStorage.getItem('user_id');
+      const data = { user_id, recipe_id: id };
+      const url = liked ? 'http://localhost:5000/dislike_recipe' : 'http://localhost:5000/like_recipe';
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          setLiked(!liked); // Toggle liked state
+          setLoading(false);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          setLoading(false);
+        });
+    }
+  };
   return (
     <div
       style={{
@@ -39,28 +115,9 @@ const RecipeCard = ({ id, image, heading, servings, cuisines, recipeURL }) => {
       }}
     >
       {/* Like Button */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '10px',
-          right: '10px',
-          cursor: 'pointer',
-          zIndex: 1,
-        }}
-        onClick={handleLikeClick}
-      >
-        <div
-          style={{
-            width: '30px',
-            height: '30px',
-            borderRadius: '50%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            transition: 'background-color 0.3s',
-          }}
-        >
-          {/* Font Awesome Heart Icon */}
+      
+      <div style={{ position: 'absolute', top: '10px', right: '10px', cursor: 'pointer', zIndex: 1 }}>
+        <div style={{ width: '30px', height: '30px', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', transition: 'background-color 0.3s' }} onClick={liked ? handleDislikeClick : handleLikeClick}>
           <FontAwesomeIcon icon={faHeart} style={{ fontSize: liked ? '1.5em' : '1em', color: liked ? 'red' : 'black' }} />
         </div>
       </div>

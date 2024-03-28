@@ -116,7 +116,7 @@ const ExplorePage = () => {
         <div className="recipe-container">
           {allRecipes.map((recipe) => (
             <RecipeCard
-              key={recipe.id}
+              id={recipe.id}
               image={recipe.image}
               heading={recipe.title}
               servings={recipe.servings}

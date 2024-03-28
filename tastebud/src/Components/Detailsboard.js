@@ -90,7 +90,7 @@ const DetailsBoard = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setPersonalInfo({ ...personalInfo, [name]: value });
+    setPersonalInfo({ ...personalInfo, [name]: localStorage.getItem('name')});
   };
 
   const handleDateChange = (date) => {

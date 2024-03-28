@@ -135,6 +135,36 @@ def handle_preflight():
     response.headers.add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
     response.headers.add('Access-Control-Allow-Credentials', 'true')  # Important for including credentials
     return response
+
+@app.route('/like_recipe', methods=['POST'])
+def like_recipe():
+    data = request.get_json()
+    userid = data['user_id']
+    recipeid = data['recipe_id']
+    try:
+        cursor = db.cursor()
+        query = "INSERT INTO user_favourite (userid, recipeid) VALUES (%s, %s)"
+        cursor.execute(query, (userid, recipeid))
+        db.commit()
+        cursor.close()
+        return jsonify({'message': 'Recipe liked successfully'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/dislike_recipe', methods=['POST'])
+def dislike_recipe():
+    data = request.get_json()
+    userid = data['user_id']
+    recipeid = data['recipe_id']
+    try:
+        cursor = db.cursor()
+        query = "DELETE FROM user_favourite WHERE userid = %s AND recipeid = %s"
+        cursor.execute(query, (userid, recipeid))
+        db.commit()
+        cursor.close()
+        return jsonify({'message': 'Recipe disliked successfully'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 @app.route('/logout', methods=['POST'])
 def logout():
     session.pop('username', None)
