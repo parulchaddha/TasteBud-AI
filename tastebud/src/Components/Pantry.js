@@ -48,7 +48,7 @@ const Pantry = () => {
             {recipesFromSearch.length > 0 || recipesFromSidebar.length > 0 ? (
               [...recipesFromSearch, ...recipesFromSidebar].map(recipe => (
                 <RecipeCard
-                  key={recipe.id}
+                  id={recipe.id}
                   image={recipe.image}
                   heading={recipe.title}
                   servings={recipe.servings}

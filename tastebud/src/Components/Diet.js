@@ -100,7 +100,7 @@ const Diet = () => {
       <div className="recipe-container">
         {recipes.map((recipe) => (
           <RecipeCard
-            key={recipe.id}
+            id={recipe.id}
             image={recipe.image}
             heading={recipe.title}
             servings={recipe.servings}
